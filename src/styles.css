@@ -1,0 +1,1196 @@
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("/assets/foodlosophy/fonts/nunito-d3a427b5.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("/assets/foodlosophy/fonts/nunitosans-0661e1b3.woff2") format("woff2");
+}
+
+:root {
+  --green: #38643d;
+  --green-dark: #1c4f33;
+  --gold: #d8cd63;
+  --gold-soft: #fff6bd;
+  --cream: #fff5df;
+  --peach: #ffe7d6;
+  --ink: #18181b;
+  --muted: #5f5f63;
+  --line: #ece9dd;
+  --white: #fff;
+  --shadow: 0 22px 55px rgba(76, 69, 35, 0.12);
+  --radius: 28px;
+  --section: min(1200px, calc(100% - 48px));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--white);
+  font-family: "Nunito", "Nunito Sans", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.section {
+  width: var(--section);
+  margin: 0 auto;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 232px;
+  min-height: 72px;
+  padding: 17px 35px;
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--white);
+  font-family: "Nunito Sans", "Nunito", sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 16px 28px rgba(30, 80, 48, 0.16);
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.button:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+}
+
+.button-small {
+  min-width: 152px;
+  min-height: 48px;
+  padding: 13px 24px;
+  font-size: 15px;
+}
+
+.site-header {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 220px minmax(420px, 1fr) max-content;
+  align-items: center;
+  gap: 28px;
+  width: min(1288px, calc(100% - 140px));
+  min-height: 166px;
+  margin: 0 auto;
+  background: var(--white);
+}
+
+.logo-link {
+  display: inline-flex;
+  width: 205px;
+}
+
+.primary-nav {
+  display: flex;
+  justify-content: center;
+  gap: clamp(34px, 5vw, 76px);
+  color: #d1c961;
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.primary-nav a {
+  transition: color 160ms ease;
+}
+
+.primary-nav a:hover {
+  color: var(--green);
+}
+
+.header-contact {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  margin: 0;
+  font-style: normal;
+  font-family: "Nunito Sans", "Nunito", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phone-link span {
+  color: var(--ink);
+  font-size: 19px;
+}
+
+.menu-toggle {
+  display: none;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--green);
+  padding: 12px;
+}
+
+.menu-toggle span:not(.sr-only) {
+  display: block;
+  height: 2px;
+  margin: 5px 0;
+  border-radius: 2px;
+  background: var(--white);
+}
+
+.hero {
+  position: relative;
+  overflow: clip;
+  padding-bottom: 80px;
+}
+
+.hero-slider {
+  position: relative;
+  overflow: hidden;
+  width: min(1400px, 100%);
+  aspect-ratio: 7 / 4;
+  margin: 0 auto;
+  border-radius: 0 0 28px 0;
+  background: #fff6bd;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  animation: heroFade 15s infinite ease-in-out;
+  animation-delay: calc(var(--slide-index) * 5s);
+  will-change: opacity;
+}
+
+.hero-button {
+  position: absolute;
+  left: max(90px, calc((100vw - 1200px) / 2 + 32px));
+  bottom: 164px;
+  z-index: 2;
+}
+
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 110px;
+  z-index: 2;
+  display: flex;
+  gap: 9px;
+  transform: translateX(-50%);
+}
+
+.hero-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(56, 100, 61, 0.28);
+  animation: dotPulse 15s infinite ease-in-out;
+  animation-delay: calc(var(--slide-index) * 5s);
+}
+
+@keyframes heroFade {
+  0%,
+  29% {
+    opacity: 1;
+  }
+  33%,
+  96% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes dotPulse {
+  0%,
+  29% {
+    background: var(--green);
+    transform: scale(1.35);
+  }
+  33%,
+  100% {
+    background: rgba(56, 100, 61, 0.28);
+    transform: scale(1);
+  }
+}
+
+.section-heading {
+  margin-bottom: 42px;
+}
+
+.section-heading h1 {
+  margin: 0 0 8px;
+  font-family: "Nunito Sans", "Nunito", sans-serif;
+  font-size: clamp(48px, 5vw, 68px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.section-heading p {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(25px, 2.4vw, 33px);
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.arrival-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 205px;
+  margin: 0 auto 28px;
+  padding: 16px 28px;
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--gold);
+  font-family: "Nunito Sans", "Nunito", sans-serif;
+  font-size: 23px;
+  font-weight: 1000;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.menu-section {
+  padding: 0 0 88px;
+}
+
+.new-arrivals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  padding: 34px 34px 22px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #fffacb 0%, #fff7dd 100%);
+  box-shadow: var(--shadow);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 90px;
+  margin-top: 24px;
+}
+
+.menu-row {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  align-items: center;
+  gap: 25px;
+  min-height: 156px;
+  padding: 30px 0;
+  border-top: 2px dotted var(--line);
+}
+
+.menu-row-new {
+  min-height: 138px;
+  padding: 14px 0 20px;
+  border-top: 0;
+}
+
+.menu-row img {
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: #f6f6f0;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.07);
+}
+
+.menu-row h3 {
+  margin: 0 0 10px;
+  font-family: "Nunito Sans", "Nunito", sans-serif;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.menu-row p {
+  margin: 0;
+  color: #36363a;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.extras {
+  padding: 44px 20px 0;
+}
+
+.extras h2 {
+  margin: 0 0 18px;
+  color: var(--gold);
+  font-size: 27px;
+  font-weight: 900;
+}
+
+.extras ul {
+  margin: 0;
+  padding-left: 24px;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.best-selling {
+  padding: 42px 0 86px;
+}
+
+.split-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.split-heading h2,
+.goodness h2,
+.chownow h2 {
+  margin: 0;
+  font-family: "Nunito Sans", "Nunito", sans-serif;
+  font-size: clamp(40px, 4vw, 58px);
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.seller-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.seller-card {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 28px 30px 32px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #fff9c7 0%, #fff7e4 100%);
+  box-shadow: var(--shadow);
+}
+
+.seller-card img {
+  width: 235px;
+  height: 235px;
+  border-radius: 999px;
+  object-fit: cover;
+  margin-bottom: 18px;
+}
+
+.seller-card h3 {
+  min-height: 62px;
+  margin: 0;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.seller-card p {
+  min-height: 100px;
+  margin: 10px 0 12px;
+  color: #3a3a3d;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.stars {
+  display: block;
+  margin-bottom: 20px;
+  color: var(--gold);
+  font-size: 22px;
+  letter-spacing: 0;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1fr);
+  gap: 64px;
+  align-items: center;
+  padding: 28px 0 86px;
+}
+
+.feature-photo img {
+  width: 100%;
+  height: 520px;
+  border-radius: 0 0 20px 20px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 38px 48px;
+}
+
+.feature-item {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  background: var(--green);
+}
+
+.feature-icon svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature-item strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.feature-item small {
+  display: block;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.chimi {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(420px, 1fr);
+  gap: 38px;
+  padding: 42px 0 34px;
+}
+
+.chimi-main,
+.taste-card,
+.coxinha-card,
+.goodness,
+.chownow {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.chimi-main {
+  position: relative;
+  min-height: 620px;
+  background: var(--gold-soft);
+}
+
+.chimi-main img {
+  width: 100%;
+  height: 100%;
+  min-height: 620px;
+  object-fit: cover;
+}
+
+.chimi-main h2 {
+  position: absolute;
+  top: 42px;
+  left: 38px;
+  margin: 0;
+  color: var(--white);
+  font-size: clamp(40px, 4.5vw, 56px);
+  font-weight: 1000;
+  line-height: 1.22;
+}
+
+.chimi-side {
+  display: grid;
+  gap: 38px;
+}
+
+.taste-card {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  align-items: end;
+  min-height: 278px;
+  padding: 34px 40px 0;
+  background: var(--gold-soft);
+}
+
+.taste-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1.34;
+}
+
+.taste-card .stamp {
+  width: 110px;
+  margin: 16px 0 0 65px;
+  opacity: 0.25;
+}
+
+.taste-card > img:last-child {
+  align-self: end;
+  width: 250px;
+}
+
+.coxinha-card {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  min-height: 280px;
+  background: var(--cream);
+}
+
+.coxinha-card img {
+  align-self: end;
+  width: 360px;
+  transform: translateX(-18px);
+}
+
+.coxinha-card div {
+  padding: 26px 34px 26px 0;
+}
+
+.coxinha-card h3 {
+  margin: 0 0 30px;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.coxinha-card a {
+  color: var(--ink);
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.goodness {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) 1fr;
+  align-items: center;
+  min-height: 390px;
+  margin-top: 26px;
+  padding: 0 64px 0 0;
+  background: var(--peach);
+}
+
+.goodness img {
+  align-self: end;
+  width: 390px;
+  margin-left: 52px;
+}
+
+.goodness div {
+  text-align: center;
+}
+
+.goodness h2 {
+  color: #5c5754;
+  font-size: clamp(52px, 5vw, 70px);
+}
+
+.goodness p {
+  margin: 10px 0 0;
+  color: #5c5754;
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.chownow {
+  display: grid;
+  grid-template-columns: 290px 1fr 260px;
+  gap: 46px;
+  align-items: center;
+  padding: 80px 72px;
+  margin-top: 70px;
+  margin-bottom: 72px;
+  background: #fff9e5;
+}
+
+.food-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 92px);
+  gap: 14px;
+}
+
+.food-thumbs img {
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.chownow-copy {
+  text-align: center;
+}
+
+.chownow-copy img {
+  width: 190px;
+  margin: 0 auto 18px;
+}
+
+.chownow h2 {
+  color: var(--green);
+  font-size: clamp(36px, 4vw, 56px);
+}
+
+.chownow p {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.phone-mockup {
+  width: 185px;
+  justify-self: center;
+  filter: drop-shadow(0 22px 32px rgba(37, 44, 31, 0.18));
+}
+
+.site-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 52px 0 72px;
+  border-top: 2px dotted var(--line);
+}
+
+.site-footer img {
+  width: 190px;
+  margin-bottom: 20px;
+}
+
+.site-footer p {
+  margin: 0;
+  color: #575757;
+  font-size: 16px;
+}
+
+.site-footer a {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.site-footer address {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  margin: 0;
+  font-style: normal;
+  font-size: 19px;
+}
+
+.site-footer h2 {
+  margin: 0 0 5px;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 1240px) and (min-width: 1025px) {
+  .site-header {
+    grid-template-columns: 210px 1fr;
+  }
+
+  .header-contact {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --section: min(760px, calc(100% - 40px));
+  }
+
+  .site-header {
+    grid-template-columns: 180px 1fr auto;
+    width: calc(100% - 40px);
+    min-height: 126px;
+  }
+
+  .logo-link {
+    width: 155px;
+  }
+
+  .header-contact {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+    grid-column: 3;
+    justify-self: end;
+  }
+
+  .primary-nav {
+    position: absolute;
+    top: calc(100% - 18px);
+    right: 0;
+    display: none;
+    width: min(320px, calc(100vw - 40px));
+    padding: 22px;
+    border-radius: 20px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    flex-direction: column;
+    gap: 14px;
+    color: var(--green);
+    font-weight: 900;
+  }
+
+  .primary-nav.is-open {
+    display: flex;
+  }
+
+  .hero {
+    padding-bottom: 68px;
+  }
+
+  .hero-slider {
+    width: min(760px, calc(100% - 32px));
+    border-radius: 0 0 18px 0;
+  }
+
+  .hero-button {
+    left: 50%;
+    bottom: 42px;
+    min-width: 190px;
+    min-height: 58px;
+    transform: translateX(-50%);
+    font-size: 18px;
+  }
+
+  .hero-button:hover {
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .section-heading {
+    text-align: center;
+  }
+
+  .section-heading p {
+    margin: 0 auto;
+  }
+
+  .arrival-pill {
+    display: flex;
+    width: fit-content;
+  }
+
+  .new-arrivals,
+  .menu-grid,
+  .seller-grid,
+  .features,
+  .chimi,
+  .goodness,
+  .chownow,
+  .site-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .new-arrivals {
+    padding: 24px;
+  }
+
+  .menu-grid {
+    column-gap: 0;
+  }
+
+  .features {
+    gap: 36px;
+  }
+
+  .feature-photo img {
+    height: 430px;
+  }
+
+  .feature-grid {
+    gap: 28px;
+  }
+
+  .chimi-main,
+  .chimi-main img {
+    min-height: 470px;
+  }
+
+  .chownow {
+    text-align: center;
+    padding: 52px 32px;
+  }
+
+  .food-thumbs {
+    justify-content: center;
+  }
+
+  .phone-mockup {
+    max-height: 520px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --section: min(100% - 32px, 430px);
+    --radius: 20px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+
+  .site-header {
+    width: calc(100% - 34px);
+    min-height: 132px;
+  }
+
+  .logo-link {
+    width: 130px;
+  }
+
+  .menu-toggle {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hero {
+    padding-bottom: 62px;
+  }
+
+  .hero-slider {
+    width: calc(100% - 18px);
+    border-radius: 0 0 12px 0;
+  }
+
+  .hero-dots {
+    display: none;
+  }
+
+  .button {
+    min-width: 184px;
+    min-height: 58px;
+    font-size: 17px;
+  }
+
+  .hero-button {
+    bottom: 0;
+  }
+
+  .menu-section {
+    padding-top: 42px;
+  }
+
+  .section-heading {
+    margin-bottom: 58px;
+  }
+
+  .section-heading h1 {
+    font-size: 39px;
+  }
+
+  .section-heading p {
+    max-width: 330px;
+    font-size: 30px;
+    line-height: 1.24;
+  }
+
+  .arrival-pill {
+    margin-bottom: 14px;
+    padding: 14px 22px;
+    font-size: 22px;
+  }
+
+  .new-arrivals {
+    padding: 24px 18px;
+  }
+
+  .menu-row,
+  .menu-row-new {
+    grid-template-columns: 92px 1fr;
+    gap: 18px;
+    min-height: 128px;
+    padding: 22px 0;
+  }
+
+  .menu-row img {
+    width: 88px;
+    height: 88px;
+  }
+
+  .menu-row h3 {
+    font-size: 22px;
+  }
+
+  .menu-row p {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .extras {
+    padding: 32px 0 0;
+  }
+
+  .extras h2 {
+    font-size: 24px;
+  }
+
+  .extras ul {
+    font-size: 22px;
+  }
+
+  .split-heading {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .split-heading h2,
+  .goodness h2,
+  .chownow h2 {
+    font-size: 37px;
+  }
+
+  .seller-card {
+    padding: 24px 22px 30px;
+  }
+
+  .seller-card img {
+    width: 210px;
+    height: 210px;
+  }
+
+  .seller-card h3 {
+    min-height: auto;
+    font-size: 24px;
+  }
+
+  .seller-card p {
+    min-height: auto;
+  }
+
+  .features {
+    padding-bottom: 48px;
+  }
+
+  .feature-photo img {
+    height: 340px;
+    border-radius: 18px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-item {
+    grid-template-columns: 58px 1fr;
+  }
+
+  .feature-icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .feature-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .chimi {
+    gap: 22px;
+    padding-top: 18px;
+  }
+
+  .chimi-main,
+  .chimi-main img {
+    min-height: 390px;
+  }
+
+  .chimi-main h2 {
+    top: 28px;
+    left: 24px;
+    font-size: 35px;
+  }
+
+  .chimi-side {
+    gap: 22px;
+  }
+
+  .taste-card {
+    grid-template-columns: 1fr 150px;
+    min-height: 230px;
+    padding: 25px 22px 0;
+  }
+
+  .taste-card h3 {
+    font-size: 22px;
+  }
+
+  .taste-card .stamp {
+    width: 82px;
+    margin-left: 22px;
+  }
+
+  .taste-card > img:last-child {
+    width: 150px;
+  }
+
+  .coxinha-card {
+    grid-template-columns: 1fr;
+    padding-top: 24px;
+    text-align: center;
+  }
+
+  .coxinha-card img {
+    width: 285px;
+    margin: 0 auto;
+    transform: none;
+  }
+
+  .coxinha-card div {
+    padding: 0 28px 30px;
+  }
+
+  .coxinha-card h3 {
+    font-size: 24px;
+  }
+
+  .goodness {
+    padding: 0 24px 32px;
+    text-align: center;
+  }
+
+  .goodness img {
+    width: 280px;
+    margin: 0 auto;
+  }
+
+  .goodness p {
+    font-size: 22px;
+  }
+
+  .chownow {
+    gap: 28px;
+    padding: 42px 20px;
+    margin-top: 42px;
+    margin-bottom: 46px;
+  }
+
+  .food-thumbs {
+    grid-template-columns: repeat(3, 76px);
+    gap: 10px;
+  }
+
+  .food-thumbs img {
+    width: 76px;
+    height: 76px;
+  }
+
+  .chownow-copy img {
+    width: 150px;
+  }
+
+  .chownow p {
+    font-size: 18px;
+  }
+
+  .phone-mockup {
+    width: 160px;
+  }
+
+  .site-footer {
+    justify-items: center;
+    text-align: center;
+    padding-bottom: 46px;
+  }
+
+  .site-footer img {
+    margin: 0 auto 18px;
+  }
+
+  .site-footer address {
+    justify-items: center;
+  }
+}

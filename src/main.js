@@ -166,32 +166,59 @@ function Header() {
 
 function Hero() {
   const slides = [
-    ["hero-picanha-steak.png", "Picanha Steak banner"],
-    ["hero-chicken-crepe.png", "Chicken crepe banner"],
-    ["hero-horseback-steak.png", "Horseback steak banner"],
+    {
+      image: "hero-picanha-steak.png",
+      alt: "Picanha Steak banner",
+      label: "Brazilian classic",
+    },
+    {
+      image: "hero-chicken-crepe.png",
+      alt: "Chicken crepe banner",
+      label: "Made from scratch",
+    },
+    {
+      image: "hero-horseback-steak.png",
+      alt: "Horseback steak banner",
+      label: "House favorite",
+    },
   ];
 
   return `
     <section class="hero" aria-label="Foodlosophy highlights">
-      <div class="hero-slider">
+      <div class="hero-slider" aria-roledescription="carousel" aria-label="Featured dishes">
         ${slides
           .map(
-            ([image, alt], index) => `
-              <img
-                class="hero-slide"
-                src="${A}${image}"
-                alt="${alt}"
-                width="1400"
-                height="800"
-                style="--slide-index: ${index}"
-                ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
-              />
+            ({ image, alt, label }, index) => `
+              <div
+                class="hero-slide ${index === 0 ? "is-active" : ""}"
+                aria-hidden="${index === 0 ? "false" : "true"}"
+              >
+                <img
+                  src="${A}${image}"
+                  alt="${alt}"
+                  width="1400"
+                  height="800"
+                  ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
+                />
+                <span class="hero-label">${label}</span>
+              </div>
             `,
           )
           .join("")}
       </div>
-      <div class="hero-dots" aria-hidden="true">
-        ${slides.map((_, index) => `<span style="--slide-index: ${index}"></span>`).join("")}
+      <div class="hero-dots" aria-label="Choose featured dish">
+        ${slides
+          .map(
+            ({ alt }, index) => `
+              <button
+                type="button"
+                aria-label="Show ${alt.replace(" banner", "")}"
+                aria-current="${index === 0 ? "true" : "false"}"
+                data-slide="${index}"
+              ></button>
+            `,
+          )
+          .join("")}
       </div>
       <a class="button hero-button" href="${orderUrl}" target="_blank" rel="noopener">Order Now</a>
     </section>
@@ -391,20 +418,76 @@ function App() {
 document.querySelector("#app").innerHTML = App();
 
 const toggle = document.querySelector(".menu-toggle");
+const toggleLabel = toggle.querySelector(".sr-only");
 const nav = document.querySelector("#primary-nav");
+const heroSlider = document.querySelector(".hero-slider");
+const heroSlides = [...document.querySelectorAll(".hero-slide")];
+const heroDots = [...document.querySelectorAll(".hero-dots button")];
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let activeHeroSlide = 0;
+let heroTimer;
+
+function setMenuOpen(open) {
+  toggle.setAttribute("aria-expanded", String(open));
+  toggleLabel.textContent = open ? "Close menu" : "Open menu";
+  nav.classList.toggle("is-open", open);
+}
 
 toggle.addEventListener("click", () => {
-  const open = toggle.getAttribute("aria-expanded") === "true";
-  toggle.setAttribute("aria-expanded", String(!open));
-  nav.classList.toggle("is-open", !open);
+  setMenuOpen(toggle.getAttribute("aria-expanded") !== "true");
 });
 
 nav.addEventListener("click", (event) => {
   if (event.target.matches("a")) {
-    toggle.setAttribute("aria-expanded", "false");
-    nav.classList.remove("is-open");
+    setMenuOpen(false);
   }
 });
+
+function showHeroSlide(index) {
+  activeHeroSlide = (index + heroSlides.length) % heroSlides.length;
+
+  heroSlides.forEach((slide, slideIndex) => {
+    const active = slideIndex === activeHeroSlide;
+    slide.classList.toggle("is-active", active);
+    slide.setAttribute("aria-hidden", String(!active));
+  });
+
+  heroDots.forEach((dot, dotIndex) => {
+    dot.setAttribute("aria-current", String(dotIndex === activeHeroSlide));
+  });
+}
+
+function stopHeroRotation() {
+  window.clearInterval(heroTimer);
+}
+
+function startHeroRotation() {
+  stopHeroRotation();
+  if (!reduceMotion.matches) {
+    heroTimer = window.setInterval(() => showHeroSlide(activeHeroSlide + 1), 5500);
+  }
+}
+
+heroDots.forEach((dot) => {
+  dot.addEventListener("click", () => {
+    showHeroSlide(Number(dot.dataset.slide));
+    startHeroRotation();
+  });
+});
+
+heroSlider.addEventListener("mouseenter", stopHeroRotation);
+heroSlider.addEventListener("mouseleave", startHeroRotation);
+heroSlider.addEventListener("focusin", stopHeroRotation);
+heroSlider.addEventListener("focusout", startHeroRotation);
+reduceMotion.addEventListener("change", startHeroRotation);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopHeroRotation();
+  } else {
+    startHeroRotation();
+  }
+});
+startHeroRotation();
 
 const revealTargets = [
   document.querySelector(".hero-slider"),

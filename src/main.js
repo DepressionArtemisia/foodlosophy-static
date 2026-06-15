@@ -405,3 +405,36 @@ nav.addEventListener("click", (event) => {
     nav.classList.remove("is-open");
   }
 });
+
+const revealTargets = [
+  document.querySelector(".hero-slider"),
+  ...document.querySelectorAll(
+    ".section, .menu-row, .seller-card, .feature-item, .chimi-main, .taste-card, .coxinha-card, .site-footer",
+  ),
+].filter(Boolean);
+
+revealTargets.forEach((element, index) => {
+  element.classList.add("reveal");
+  element.style.setProperty("--reveal-delay", `${Math.min(index % 5, 4) * 55}ms`);
+});
+
+if ("IntersectionObserver" in window) {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      rootMargin: "0px 0px -8% 0px",
+      threshold: 0.12,
+    },
+  );
+
+  revealTargets.forEach((element) => revealObserver.observe(element));
+} else {
+  revealTargets.forEach((element) => element.classList.add("is-visible"));
+}

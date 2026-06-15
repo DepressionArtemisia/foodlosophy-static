@@ -169,17 +169,14 @@ function Hero() {
     {
       image: "hero-picanha-steak.png",
       alt: "Picanha Steak banner",
-      label: "Brazilian classic",
     },
     {
       image: "hero-chicken-crepe.png",
       alt: "Chicken crepe banner",
-      label: "Made from scratch",
     },
     {
       image: "hero-horseback-steak.png",
       alt: "Horseback steak banner",
-      label: "House favorite",
     },
   ];
 
@@ -188,7 +185,7 @@ function Hero() {
       <div class="hero-slider" aria-roledescription="carousel" aria-label="Featured dishes">
         ${slides
           .map(
-            ({ image, alt, label }, index) => `
+            ({ image, alt }, index) => `
               <div
                 class="hero-slide ${index === 0 ? "is-active" : ""}"
                 aria-hidden="${index === 0 ? "false" : "true"}"
@@ -200,11 +197,13 @@ function Hero() {
                   height="800"
                   ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
                 />
-                <span class="hero-label">${label}</span>
               </div>
             `,
           )
           .join("")}
+        <a class="button hero-button" href="${orderUrl}" target="_blank" rel="noopener">
+          <span class="sr-only">Order Now</span>
+        </a>
       </div>
       <div class="hero-dots" aria-label="Choose featured dish">
         ${slides
@@ -220,7 +219,6 @@ function Hero() {
           )
           .join("")}
       </div>
-      <a class="button hero-button" href="${orderUrl}" target="_blank" rel="noopener">Order Now</a>
     </section>
   `;
 }

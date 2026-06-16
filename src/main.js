@@ -14,7 +14,7 @@ const menuItems = [
   {
     name: "12. Picanha Steak 10.0 oz",
     text:
-      "Served with Rice, your choice of Black or Pinto Beans, French Fries and Vinagrete - preco $24.98.",
+      "Served with Rice, your choice of Black or Pinto Beans, French Fries and Vinagrete.",
     image: "menu-picanha-steak.png",
   },
   {
